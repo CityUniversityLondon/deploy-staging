@@ -27084,42 +27084,59 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_devcorate_devcorate_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/devcorate/devcorate.js */ "./src/components/devcorate/devcorate.js");
 
 
+ // Ensures backward compatibility for older browsers
+ // Loads plugins used by the project
+ // List of components or patterns to be initialized
+ // Utility function to convert URL parameters to an object
+ // Handles link icons component
+ // Handles video preview components
+ // Function to decorate elements based on certain parameters
 
-
-
-
-
-
-
+// Error handling wrapper to safely execute a function
 function tryCatch(f) {
   try {
-    f();
+    f(); // Try to run the function
   } catch (e) {
+    // If an error occurs, log it to the console
     if (console && console.error) {
       console.error(e);
     }
   }
 }
+
+// Function to launch a given pattern or component
 function launchPattern(pattern) {
   if (typeof pattern === 'function') {
+    // If the pattern is a function, execute it safely
     tryCatch(pattern);
   } else if (pattern.className) {
+    // If the pattern has a className, initialize it on all matching elements
     let {
       className,
       launch
     } = pattern;
+    // Select all DOM elements matching the class, excluding those already initialized
     const elements = document.querySelectorAll(`.${className}:not(.${className}-njs)`);
+    // Launch the component for each selected element
     elements.forEach(element => {
       tryCatch(() => launch(element));
     });
   }
+  console.log("feature branch");
 }
 
-// DOM ready
+// Run once the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+  // Initialize all patterns or components
   _component_list__WEBPACK_IMPORTED_MODULE_2__["default"].forEach(launchPattern);
+
+  // Convert URL parameters into an object
   const parameters = Object(_js_utils_util_js__WEBPACK_IMPORTED_MODULE_3__["parametersToObject"])(location.search);
+
+  // If the 'test' parameter exists, apply the devcorate function to the body element
   parameters['test'] && Object(_components_devcorate_devcorate_js__WEBPACK_IMPORTED_MODULE_6__["devcorate"])(document.querySelector('body'), 'test', parameters['test']);
+
+  // If the 'prod' parameter exists, apply the devcorate function for production mode
   parameters['prod'] && Object(_components_devcorate_devcorate_js__WEBPACK_IMPORTED_MODULE_6__["devcorate"])(document.querySelector('body'), 'prod', parameters['prod']);
 });
 
